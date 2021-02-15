@@ -2731,7 +2731,7 @@ static void _ash_uncurse()
             mprf(MSGCH_GOD, GOD_ASHENZARI, "Your curses shatter.");
             uncursed = true;
         }
-        ashenzar_uncurse_and_destroy(slot);
+        ashenzari_uncurse_and_destroy(slot);
     }
 }
 
