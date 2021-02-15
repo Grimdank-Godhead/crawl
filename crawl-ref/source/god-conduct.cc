@@ -1071,6 +1071,8 @@ string get_god_likes(god_type which_god)
     case GOD_ZIN:
         likes.emplace_back("you donate money");
         break;
+    case GOD_ASHENZARI:
+        likes.emplace_back("you bind yourself with curses");
     default:
         break;
     }
