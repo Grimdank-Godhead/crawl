@@ -2214,6 +2214,57 @@ bool ashenzari_curse_item()
     return true;
 }
 
+/**
+ * Give a prompt to uncurse (and destroy an item).
+ *
+ * Player can abort without penalty.
+ *
+ * @return      Whether the player uncursed anything.
+ */
+bool ashenzari_uncurse_item()
+{
+    int item_slot = prompt_invent_item("Uncurse and destroy which item?",
+                                       menu_type::invlist,
+                                       OSEL_CURSED_WORN, OPER_ANY,
+                                       invprompt_flag::escape_only);
+    if (prompt_failed(item_slot))
+        return false;
+
+    item_def& item(you.inv[item_slot]);
+
+    if (!yesno(make_stringf("Really remove and destroy %s?%s",
+                            item.name(DESC_THE).c_str(),
+                            you.props.exists(AVAILABLE_CURSE_KEY) ?
+                                " Ashenzari will withdraw the offered vision "
+                                "and curse!"
+                                : "").c_str(),
+                            false, 'n'))
+    {
+        canned_msg(MSG_OK);
+        return false;
+    }
+
+    mprf("You shatter the curse binding %s!", item.name(DESC_THE).c_str());
+    ashenzari_uncurse_and_destroy(item_slot);
+
+    if (you.props.exists(AVAILABLE_CURSE_KEY))
+    {
+        simple_god_message(" withdraws the vision and curse.");
+        you.props.erase(AVAILABLE_CURSE_KEY);
+        you.props[ASHENZARI_CURSE_PROGRESS_KEY] = 0;
+    }
+
+    return true;
+}
+
+void ashenzari_uncurse_and_destroy(int item_slot)
+{
+    const equipment_type slot = item_equip_slot(you.inv[item_slot]);
+
+    unequip_item(slot);
+    destroy_item(you.inv[item_slot]);
+}
+
 bool can_convert_to_beogh()
 {
     if (silenced(you.pos()))

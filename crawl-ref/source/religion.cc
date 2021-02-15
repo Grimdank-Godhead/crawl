@@ -2728,11 +2728,10 @@ static void _ash_uncurse()
             continue;
         if (!uncursed)
         {
-            mprf(MSGCH_GOD, GOD_ASHENZARI, "Your curses crumble away.");
+            mprf(MSGCH_GOD, GOD_ASHENZARI, "Your curses shatter.");
             uncursed = true;
         }
-        item_def &item = you.inv[slot];
-        do_uncurse_item(item, false);
+        ashenzar_uncurse_and_destroy(slot);
     }
 }
 

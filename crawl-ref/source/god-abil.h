@@ -130,6 +130,8 @@ void cheibriados_time_step(int pow);
 
 void ashenzari_offer_new_curse();
 bool ashenzari_curse_item();
+bool ashenzari_uncurse_item();
+void ashenzari_uncurse_and_destroy(int item_slot);
 
 bool can_convert_to_beogh();
 void spare_beogh_convert();
